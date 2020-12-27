@@ -11,7 +11,16 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
       if (call.method == "init") {
         initPush(result: result)
+        print("注册推送")
+      }else if(call.method == "loginIn"){
+//        登录进入
+        MiPushSDK.setAlias((call.arguments as? [String:Any])?["userId"] as? String)
+        print((call.arguments as? [String:Any])?["userId"] as? String)
+      }else if(call.method == "loginOut"){
+//        退出进入
+        MiPushSDK.unsetAlias((call.arguments as? [String:Any])?["userId"] as? String)
       }
+        
     }
     private func initPush(result: @escaping FlutterResult) {
 //      NSLog(TAG + "initPush")
@@ -19,8 +28,8 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
       result("success")
     }
     public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-      let nsdata = NSData(data: deviceToken)
-      let token = nsdata.description
+//      let nsdata = NSData(data: deviceToken)
+//      let token = nsdata.description
 //      NSLog(TAG + "application, token = " + token)
       MiPushSDK.bindDeviceToken(deviceToken)
     }
