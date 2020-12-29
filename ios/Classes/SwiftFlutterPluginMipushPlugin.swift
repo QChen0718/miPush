@@ -18,7 +18,6 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
         }else if call.method == "unAliasName" {
             MiPushSDK.unsetAlias((call.arguments as? [String:String])?["userId"] ?? "")
         }
-        
     }
     private func initPush(result: @escaping FlutterResult) {
 //      NSLog(TAG + "initPush")
@@ -26,8 +25,8 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
       result("success")
     }
     public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-      let nsdata = NSData(data: deviceToken)
-      let token = nsdata.description
+//      let nsdata = NSData(data: deviceToken)
+//      let token = nsdata.description
 //      NSLog(TAG + "application, token = " + token)
       MiPushSDK.bindDeviceToken(deviceToken)
     }

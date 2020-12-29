@@ -27,7 +27,9 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await FlutterPluginMipush.platformVersion;
+      // platformVersion = await FlutterPluginMipush.platformVersion;
+      await FlutterPluginMipush.init();
+      // await FlutterPluginMipush.setLoginIn(userId: "234566");
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

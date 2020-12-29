@@ -11,6 +11,9 @@ class FlutterPluginMipush {
     final String version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
+  static init() async{
+    await _channel.invokeMethod("init");
+  }
   /// 传递 类型的参数
   static Future<String> sendMiPushData(String app_id, String app_key,String user_phone) async {
     Map<String, String> params = Map<String, String>();
