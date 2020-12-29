@@ -5,13 +5,20 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "flutter_plugin_mipush", binaryMessenger: registrar.messenger())
     let instance = SwiftFlutterPluginMipushPlugin()
+    registrar.addApplicationDelegate(instance)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
       if (call.method == "init") {
         initPush(result: result)
-      }
+      }else if call.method == "setAliasName" {
+    //      登录成功，添加别名
+            MiPushSDK.setAlias((call.arguments as? [String:String])?["userId"] ?? "")
+        }else if call.method == "unAliasName" {
+            MiPushSDK.unsetAlias((call.arguments as? [String:String])?["userId"] ?? "")
+        }
+        
     }
     private func initPush(result: @escaping FlutterResult) {
 //      NSLog(TAG + "initPush")
@@ -51,13 +58,19 @@ public class SwiftFlutterPluginMipushPlugin: NSObject, FlutterPlugin ,MiPushSDKD
     }
     
     public func miPushRequestSucc(withSelector selector: String!, data: [AnyHashable : Any]!) {
-//      NSLog(TAG + "miPushRequestSucc, selector = " + selector + ", data = " + data.description)
+        if selector == "bindDeviceToken:" {
+            let regId = data["regid"]
+            print("regId=\(regId ?? "成功")")
+        }
     }
     
     public func miPushRequestErr(withSelector selector: String!, error: Int32, data: [AnyHashable : Any]!) {
-  //    NSLog(TAG + "miPushRequestErr, selector = " + selector + ", error = " + error.description + ", data = " + data.description)
+        if selector == "bindDeviceToken:" {
+            let regId = data["regid"]
+            print("regId = \(regId ?? "失败")")
+        }
     }
-    
+//    解析推送数据
     public func miPushReceiveNotification(_ data: [AnyHashable : Any]!) {
 //      NSLog(TAG + "miPushReceiveNotification, data = " + data.description)
     }
